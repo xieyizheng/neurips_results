@@ -1,0 +1,79 @@
+2024-06-03 17:27:53,879 INFO: 
+Version Information: 
+	Python: 3.8.19
+	PyTorch: 2.2.2+cu121
+	TorchVision: 0.17.2+cu121
+2024-06-03 17:27:53,880 INFO: 
+  backend: dp
+  type: GeomFmaps_Model
+  num_gpu: 1
+  manual_seed: 1234
+  path:[
+    resume_state: checkpoints/geomfmaps/geomfmaps_full_full_normalized_wks.pth
+    resume: False
+    results_root: /storage/user/xiyi/xiyi/DEFM/defm/results/geomfmaps/full_full_normalized_wks30_
+    log: /storage/user/xiyi/xiyi/DEFM/defm/results/geomfmaps/full_full_normalized_wks30_/log
+    visualization: /storage/user/xiyi/xiyi/DEFM/defm/results/geomfmaps/full_full_normalized_wks30_/visualization
+    pcks: /storage/user/xiyi/xiyi/DEFM/defm/results/geomfmaps/full_full_normalized_wks30_/pcks
+    heatmaps: /storage/user/xiyi/xiyi/DEFM/defm/results/geomfmaps/full_full_normalized_wks30_/heatmaps
+  ]
+  default_scale: False
+  datasets:[
+    test_dataset:[
+      name: NeurIPSVal
+      type: PairNeurIPSDataset
+      default_scale: False
+      data_root: ../data/NeurIPS/full_full/test/
+      return_evecs: True
+      return_faces: True
+      num_evecs: 30
+      return_corr: True
+      return_dist: True
+    ]
+  ]
+  networks:[
+    feature_extractor:[
+      type: DiffusionNet
+      in_channels: 128
+      out_channels: 256
+      cache_dir: ../data/NeurIPS/full_full/test//diffusion
+      input_type: wks
+    ]
+    fmap_net:[
+      type: StandardFMNet
+      bidirectional: False
+    ]
+  ]
+  val:[
+    save_geo_errors: True
+    metrics:[
+      geo_error:[
+        type: calculate_geodesic_error
+      ]
+      plot_pck_per_pair:[
+        type: plot_pck_multiple
+      ]
+      plot_pck:[
+        type: plot_pck
+      ]
+    ]
+  ]
+  name: full_full_normalized_wks
+  is_train: False
+  dist: False
+  rank: 0
+  world_size: 1
+
+2024-06-03 17:27:53,976 INFO: Dataset [PairNeurIPSDataset]-[NeurIPSVal] is built.
+2024-06-03 17:27:53,976 INFO: Number of test images in NeurIPSVal: 284
+2024-06-03 17:27:54,013 INFO: Network [DiffusionNet] is created.
+2024-06-03 17:27:54,013 INFO: Network [StandardFMNet] is created.
+2024-06-03 17:27:54,309 INFO: Network: DiffusionNet, with parameters: 510,336
+2024-06-03 17:27:54,309 INFO: Network: StandardFMNet, with parameters: 0
+2024-06-03 17:27:54,309 INFO: Metric [function] is created.
+2024-06-03 17:27:54,309 INFO: Metric [function] is created.
+2024-06-03 17:27:54,309 INFO: Metric [function] is created.
+2024-06-03 17:27:54,381 INFO: Resuming network: feature_extractor
+2024-06-03 17:27:54,381 INFO: Network fmap_net has no param. Ignore it.
+2024-06-03 17:27:54,381 INFO: Model [GeomFmaps_Model] is created.
+2024-06-03 17:27:54,381 INFO: Testing PairNeurIPSDataset...
