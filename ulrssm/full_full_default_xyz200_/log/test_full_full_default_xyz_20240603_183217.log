@@ -124,3 +124,6 @@ Version Information:
 2024-06-03 18:32:18,357 INFO: Network permutation has no param. Ignore it.
 2024-06-03 18:32:18,357 INFO: Model [ULRSSM_Model] is created.
 2024-06-03 18:32:18,357 INFO: Testing PairNeurIPSDataset...
+2024-06-03 20:06:38,274 INFO: Avg time: 19.3234
+2024-06-03 20:06:39,554 INFO: Val auc: 0.5792
+2024-06-03 20:06:39,554 INFO: Val avg error: 0.1632
