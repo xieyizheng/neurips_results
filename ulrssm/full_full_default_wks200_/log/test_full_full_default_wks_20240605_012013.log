@@ -1,0 +1,129 @@
+2024-06-05 01:20:13,409 INFO: 
+Version Information: 
+	Python: 3.8.19
+	PyTorch: 2.2.2+cu121
+	TorchVision: 0.17.2+cu121
+2024-06-05 01:20:13,410 INFO: 
+  backend: dp
+  type: ULRSSM_Model
+  num_gpu: 1
+  manual_seed: 1234
+  refine: 25
+  non-isometric: True
+  partial: False
+  visualize: True
+  default_scale: True
+  path:[
+    resume_state: experiments/ulrssm/neurips_full_full_default_wks/models/28000.pth
+    resume: False
+    results_root: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/full_full_default_wks200_
+    log: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/full_full_default_wks200_/log
+    visualization: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/full_full_default_wks200_/visualization
+    pcks: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/full_full_default_wks200_/pcks
+    heatmaps: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/full_full_default_wks200_/heatmaps
+  ]
+  datasets:[
+    test_dataset:[
+      name: NeurIPSVal
+      type: PairNeurIPSDataset
+      data_root: ../data/NeurIPS/full_full/test/
+      N: None
+      default_scale: True
+      return_evecs: True
+      return_faces: True
+      num_evecs: 200
+      return_corr: True
+      return_dist: True
+    ]
+  ]
+  networks:[
+    feature_extractor:[
+      type: DiffusionNet
+      in_channels: 128
+      out_channels: 256
+      cache_dir: ../data/NeurIPS/full_full/test/diffusion
+      input_type: wks
+    ]
+    fmap_net:[
+      type: RegularizedFMNet
+      bidirectional: False
+    ]
+    permutation:[
+      type: Similarity
+      tau: 0.07
+      hard: True
+    ]
+  ]
+  train:[
+    optims:[
+      feature_extractor:[
+        type: Adam
+        lr: 0.001
+      ]
+    ]
+    schedulers:[
+      feature_extractor:[
+        type: none
+      ]
+    ]
+    losses:[
+      surfmnet_loss:[
+        type: SURFMNetLoss
+        w_bij: 1.0
+        w_orth: 1.0
+        w_lap: 0.0
+      ]
+      align_loss:[
+        type: SquaredFrobeniusLoss
+        loss_weight: 1.0
+      ]
+      dirichlet_loss:[
+        type: DirichletLoss
+        loss_weight: 5.0
+      ]
+    ]
+  ]
+  val:[
+    save_geo_errors: True
+    metrics:[
+      geo_error:[
+        type: calculate_geodesic_error
+      ]
+      plot_pck_per_pair:[
+        type: plot_pck_multiple
+      ]
+      plot_pck:[
+        type: plot_pck
+      ]
+    ]
+  ]
+  name: full_full_default_wks
+  is_train: False
+  dist: False
+  rank: 0
+  world_size: 1
+
+2024-06-05 01:20:15,144 INFO: Dataset [PairNeurIPSDataset]-[NeurIPSVal] is built.
+2024-06-05 01:20:15,145 INFO: Number of test images in NeurIPSVal: 284
+2024-06-05 01:20:15,173 INFO: Network [DiffusionNet] is created.
+2024-06-05 01:20:15,174 INFO: Network [RegularizedFMNet] is created.
+2024-06-05 01:20:15,174 INFO: Network [Similarity] is created.
+2024-06-05 01:20:15,459 INFO: Network: DiffusionNet, with parameters: 510,336
+2024-06-05 01:20:15,459 INFO: Network: RegularizedFMNet, with parameters: 0
+2024-06-05 01:20:15,459 INFO: Network: Similarity, with parameters: 0
+2024-06-05 01:20:15,459 INFO: Metric [function] is created.
+2024-06-05 01:20:15,459 INFO: Metric [function] is created.
+2024-06-05 01:20:15,459 INFO: Metric [function] is created.
+2024-06-05 01:20:15,460 INFO: Network fmap_net has no param to optimize. Ignore it.
+2024-06-05 01:20:15,460 INFO: Network permutation has no param to optimize. Ignore it.
+2024-06-05 01:20:15,460 INFO: Loss [SURFMNetLoss] is created.
+2024-06-05 01:20:15,460 INFO: Loss [SquaredFrobeniusLoss] is created.
+2024-06-05 01:20:15,460 INFO: Loss [DirichletLoss] is created.
+2024-06-05 01:20:15,601 INFO: Resuming network: feature_extractor
+2024-06-05 01:20:15,601 INFO: Network fmap_net has no param. Ignore it.
+2024-06-05 01:20:15,601 INFO: Network permutation has no param. Ignore it.
+2024-06-05 01:20:15,602 INFO: Model [ULRSSM_Model] is created.
+2024-06-05 01:20:15,602 INFO: Testing PairNeurIPSDataset...
+2024-06-05 02:59:19,627 INFO: Avg time: 20.0813
+2024-06-05 02:59:21,145 INFO: Val auc: 0.6378
+2024-06-05 02:59:21,145 INFO: Val avg error: 0.1182
