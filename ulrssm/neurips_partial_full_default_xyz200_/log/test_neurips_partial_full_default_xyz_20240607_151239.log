@@ -1,0 +1,122 @@
+2024-06-07 15:12:39,177 INFO: 
+Version Information: 
+	Python: 3.8.19
+	PyTorch: 2.2.2+cu121
+	TorchVision: 0.17.2+cu121
+2024-06-07 15:12:39,184 INFO: 
+  backend: dp
+  type: ULRSSM_Model
+  num_gpu: 1
+  manual_seed: 1234
+  refine: 25
+  non-isometric: False
+  partial: True
+  default_scale: True
+  path:[
+    resume_state: experiments/ulrssm/neurips_partial_full_default_xyz/models/360000.pth
+    resume: False
+    results_root: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/neurips_partial_full_default_xyz200_
+    log: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/neurips_partial_full_default_xyz200_/log
+    visualization: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/neurips_partial_full_default_xyz200_/visualization
+    pcks: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/neurips_partial_full_default_xyz200_/pcks
+    heatmaps: /storage/user/xiyi/xiyi/DEFM/defm/results/ulrssm/neurips_partial_full_default_xyz200_/heatmaps
+  ]
+  datasets:[
+    test_dataset:[
+      name: NeurIPSVal
+      type: PairNeurIPSDataset
+      data_root: ../data/NeurIPS/partial_full/test/
+      N: None
+      default_scale: True
+      return_evecs: True
+      return_faces: True
+      num_evecs: 200
+      return_corr: True
+      return_dist: True
+    ]
+  ]
+  networks:[
+    feature_extractor:[
+      type: DiffusionNet
+      in_channels: 3
+      out_channels: 256
+      cache_dir: ../data/NeurIPS/partial_full/test/diffusion
+      input_type: neurips_xyz_y_rotation_0_180_0
+    ]
+    fmap_net:[
+      type: RegularizedFMNet
+      bidirectional: False
+    ]
+    permutation:[
+      type: Similarity
+      tau: 0.07
+      hard: True
+    ]
+  ]
+  train:[
+    optims:[
+      feature_extractor:[
+        type: Adam
+        lr: 0.001
+      ]
+    ]
+    schedulers:[
+      feature_extractor:[
+        type: none
+      ]
+    ]
+    losses:[
+      surfmnet_loss:[
+        type: PartialFmapsLoss
+        w_bij: 1.0
+        w_orth: 1.0
+      ]
+      align_loss:[
+        type: SquaredFrobeniusLoss
+        loss_weight: 1.0
+      ]
+    ]
+  ]
+  val:[
+    save_geo_errors: True
+    metrics:[
+      geo_error:[
+        type: calculate_geodesic_error
+      ]
+      plot_pck_per_pair:[
+        type: plot_pck_multiple
+      ]
+      plot_pck:[
+        type: plot_pck
+      ]
+    ]
+  ]
+  name: neurips_partial_full_default_xyz
+  is_train: False
+  dist: False
+  rank: 0
+  world_size: 1
+
+2024-06-07 15:12:40,950 INFO: Dataset [PairNeurIPSDataset]-[NeurIPSVal] is built.
+2024-06-07 15:12:40,951 INFO: Number of test images in NeurIPSVal: 284
+2024-06-07 15:12:40,982 INFO: Network [DiffusionNet] is created.
+2024-06-07 15:12:40,982 INFO: Network [RegularizedFMNet] is created.
+2024-06-07 15:12:40,982 INFO: Network [Similarity] is created.
+2024-06-07 15:12:41,236 INFO: Network: DiffusionNet, with parameters: 494,336
+2024-06-07 15:12:41,237 INFO: Network: RegularizedFMNet, with parameters: 0
+2024-06-07 15:12:41,237 INFO: Network: Similarity, with parameters: 0
+2024-06-07 15:12:41,237 INFO: Metric [function] is created.
+2024-06-07 15:12:41,237 INFO: Metric [function] is created.
+2024-06-07 15:12:41,237 INFO: Metric [function] is created.
+2024-06-07 15:12:41,238 INFO: Network fmap_net has no param to optimize. Ignore it.
+2024-06-07 15:12:41,238 INFO: Network permutation has no param to optimize. Ignore it.
+2024-06-07 15:12:41,238 INFO: Loss [PartialFmapsLoss] is created.
+2024-06-07 15:12:41,238 INFO: Loss [SquaredFrobeniusLoss] is created.
+2024-06-07 15:12:41,450 INFO: Resuming network: feature_extractor
+2024-06-07 15:12:41,450 INFO: Network fmap_net has no param. Ignore it.
+2024-06-07 15:12:41,450 INFO: Network permutation has no param. Ignore it.
+2024-06-07 15:12:41,450 INFO: Model [ULRSSM_Model] is created.
+2024-06-07 15:12:41,450 INFO: Testing PairNeurIPSDataset...
+2024-06-07 16:35:37,491 INFO: Avg time: 17.2921
+2024-06-07 16:35:37,898 INFO: Val auc: 0.2241
+2024-06-07 16:35:37,898 INFO: Val avg error: 0.3918
