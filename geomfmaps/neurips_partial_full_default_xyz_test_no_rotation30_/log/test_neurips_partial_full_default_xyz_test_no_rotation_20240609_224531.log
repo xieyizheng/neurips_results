@@ -1,0 +1,83 @@
+2024-06-09 22:45:31,429 INFO: 
+Version Information: 
+	Python: 3.8.18
+	PyTorch: 2.3.0+cu118
+	TorchVision: 0.18.0+cu118
+2024-06-09 22:45:31,429 INFO: 
+  backend: dp
+  type: GeomFmaps_Model
+  num_gpu: 1
+  manual_seed: 1234
+  path:[
+    resume_state: experiments/geomfmaps/neurips_partial_full_default_xyz/models/22000.pth
+    resume: False
+    results_root: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/geomfmaps/neurips_partial_full_default_xyz_test_no_rotation30_
+    log: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/geomfmaps/neurips_partial_full_default_xyz_test_no_rotation30_/log
+    visualization: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/geomfmaps/neurips_partial_full_default_xyz_test_no_rotation30_/visualization
+    pcks: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/geomfmaps/neurips_partial_full_default_xyz_test_no_rotation30_/pcks
+    heatmaps: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/geomfmaps/neurips_partial_full_default_xyz_test_no_rotation30_/heatmaps
+  ]
+  default_scale: True
+  datasets:[
+    test_dataset:[
+      name: NeurIPSVal
+      type: PairNeurIPSDataset
+      data_root: ../data/NeurIPS/partial_full/test/
+      N: None
+      default_scale: True
+      return_evecs: True
+      return_faces: True
+      num_evecs: 30
+      return_corr: True
+      return_dist: True
+    ]
+  ]
+  networks:[
+    feature_extractor:[
+      type: DiffusionNet
+      in_channels: 3
+      out_channels: 256
+      cache_dir: ../data/NeurIPS/partial_full/test/diffusion
+      input_type: neurips_xyz_no_rotation
+    ]
+    fmap_net:[
+      type: StandardFMNet
+      bidirectional: False
+    ]
+  ]
+  val:[
+    save_geo_errors: True
+    metrics:[
+      geo_error:[
+        type: calculate_geodesic_error
+      ]
+      plot_pck_per_pair:[
+        type: plot_pck_multiple
+      ]
+      plot_pck:[
+        type: plot_pck
+      ]
+    ]
+  ]
+  name: neurips_partial_full_default_xyz_test_no_rotation
+  is_train: False
+  dist: False
+  rank: 0
+  world_size: 1
+
+2024-06-09 22:45:31,565 INFO: Dataset [PairNeurIPSDataset]-[NeurIPSVal] is built.
+2024-06-09 22:45:31,566 INFO: Number of test images in NeurIPSVal: 284
+2024-06-09 22:45:31,574 INFO: Network [DiffusionNet] is created.
+2024-06-09 22:45:31,574 INFO: Network [StandardFMNet] is created.
+2024-06-09 22:45:33,703 INFO: Network: DiffusionNet, with parameters: 494,336
+2024-06-09 22:45:33,704 INFO: Network: StandardFMNet, with parameters: 0
+2024-06-09 22:45:33,704 INFO: Metric [function] is created.
+2024-06-09 22:45:33,704 INFO: Metric [function] is created.
+2024-06-09 22:45:33,704 INFO: Metric [function] is created.
+2024-06-09 22:45:33,731 INFO: Resuming network: feature_extractor
+2024-06-09 22:45:33,731 INFO: Network fmap_net has no param. Ignore it.
+2024-06-09 22:45:33,731 INFO: Model [GeomFmaps_Model] is created.
+2024-06-09 22:45:33,731 INFO: Testing PairNeurIPSDataset...
+2024-06-09 22:50:12,989 INFO: Avg time: 0.0258
+2024-06-09 22:50:13,318 INFO: Val auc: 0.5598
+2024-06-09 22:50:13,318 INFO: Val avg error: 0.1482

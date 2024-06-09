@@ -1,0 +1,128 @@
+2024-06-09 22:57:24,067 INFO: 
+Version Information: 
+	Python: 3.8.18
+	PyTorch: 2.3.0+cu118
+	TorchVision: 0.18.0+cu118
+2024-06-09 22:57:24,067 INFO: 
+  backend: dp
+  type: DPFM_Model
+  num_gpu: 1
+  manual_seed: 1234
+  default_scale: True
+  rot_x: 0
+  rot_y: 0
+  rot_z: 0
+  augmentation: False
+  rotation: False
+  test_z_rotation: True
+  path:[
+    resume_state: experiments/dpfm/neurips_partial_full_default_xyz_no_rotation/models/24000.pth
+    resume: False
+    results_root: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/dpfm/neurips_partial_full_default_xyz_no_rotation_test_z_rotation50_
+    log: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/dpfm/neurips_partial_full_default_xyz_no_rotation_test_z_rotation50_/log
+    visualization: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/dpfm/neurips_partial_full_default_xyz_no_rotation_test_z_rotation50_/visualization
+    pcks: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/dpfm/neurips_partial_full_default_xyz_no_rotation_test_z_rotation50_/pcks
+    heatmaps: /home/guests/lennart_bastian/xieyizheng/DEFM/defm/results/dpfm/neurips_partial_full_default_xyz_no_rotation_test_z_rotation50_/heatmaps
+  ]
+  datasets:[
+    test_dataset:[
+      name: NeurIPSVal
+      type: PairNeurIPSDataset
+      data_root: ../data/NeurIPS/partial_full/test/
+      default_scale: True
+      return_evecs: True
+      return_faces: True
+      num_evecs: 50
+      return_corr: True
+      return_dist: True
+    ]
+  ]
+  cache_dir: ../data/NeurIPS/partial_full/test/
+  networks:[
+    dpfm_net:[
+      type: DPFMNet
+      cfg:[
+        fmap:[
+          n_fmap: 50
+          k_eig: 128
+          n_feat: 256
+          C_in: 3
+          lambda_: 100
+          resolvant_gamma: 0.5
+          robust: False
+        ]
+        attention:[
+          num_head: 4
+          gnn_dim: 128
+          ref_n_layers: 1
+          cross_sampling_ratio: 1.0
+          attention_type: normal
+        ]
+        overlap:[
+          overlap_feat_dim: 32
+        ]
+      ]
+    ]
+  ]
+  train:[
+    optims:[
+      feature_extractor:[
+        type: Adam
+        lr: 0.001
+      ]
+    ]
+    schedulers:[
+      feature_extractor:[
+        type: none
+      ]
+    ]
+    losses:[
+      surfmnet_loss:[
+        type: PartialFmapsLoss
+        w_bij: 1.0
+        w_orth: 1.0
+      ]
+      align_loss:[
+        type: SquaredFrobeniusLoss
+        loss_weight: 1.0
+      ]
+    ]
+  ]
+  val:[
+    save_geo_errors: True
+    metrics:[
+      geo_error:[
+        type: calculate_geodesic_error
+      ]
+      plot_pck_per_pair:[
+        type: plot_pck_multiple
+      ]
+      plot_pck:[
+        type: plot_pck
+      ]
+    ]
+  ]
+  name: neurips_partial_full_default_xyz_no_rotation_test_z_rotation
+  is_train: False
+  dist: False
+  rank: 0
+  world_size: 1
+
+2024-06-09 22:57:26,667 INFO: Dataset [PairNeurIPSDataset]-[NeurIPSVal] is built.
+2024-06-09 22:57:26,667 INFO: Number of test images in NeurIPSVal: 284
+2024-06-09 22:57:26,692 INFO: Network [DPFMNet] is created.
+2024-06-09 22:57:28,795 INFO: Network: DPFMNet, with parameters: 791,041
+2024-06-09 22:57:28,795 INFO: Metric [function] is created.
+2024-06-09 22:57:28,795 INFO: Metric [function] is created.
+2024-06-09 22:57:28,795 INFO: Metric [function] is created.
+2024-06-09 22:57:28,832 INFO: Resuming network: dpfm_net
+2024-06-09 22:57:28,832 INFO: Model [DPFM_Model] is created.
+2024-06-09 22:57:28,832 INFO: Testing PairNeurIPSDataset...
+2024-06-09 23:05:59,808 INFO: Avg time: 2.8272
+2024-06-09 23:06:00,304 INFO: Val auc: 0.4093
+2024-06-09 23:06:00,304 INFO: Val avg error: 0.2185
+2024-06-09 23:06:00,305 INFO: Val avg fmap loss: 30.2619
+2024-06-09 23:06:00,305 INFO: Val avg acc loss: 0.2780
+2024-06-09 23:06:00,305 INFO: Val avg nce loss: 6.2620
+2024-06-09 23:06:00,305 INFO: Val avg iou1: 0.3082
+2024-06-09 23:06:00,305 INFO: Val avg iou2: 0.4287
